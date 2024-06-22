@@ -1,0 +1,26 @@
+<div class="w-full relative">
+  <div class="post-head"></div>
+
+  <div class="post-body">
+    <slot />
+  </div>
+
+  <div class="post-foot"></div>
+</div>
+
+<style>
+  .post-head {
+    height: 25px;
+    background: url('/post-head.png') 0 0 no-repeat;
+  }
+
+  .post-foot {
+    height: 25px;
+    background: url('/post-foot.png') 0 0 no-repeat;
+  }
+
+  .post-body {
+    padding: 0 60px;
+    background: url('/post-body.png') 0 0 repeat-y;
+  }
+</style>

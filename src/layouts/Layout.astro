@@ -1,0 +1,46 @@
+---
+import '@/styles/global.css'
+import { ViewTransitions } from 'astro:transitions'
+import { CONSTANTS } from '../consts'
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Global Metadata -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <!-- Font preloads -->
+    <link
+      rel="preload"
+      href="/fonts/LXGWWenKaiMono-Regular.ttf"
+      as="font"
+      type="font/tff"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/LXGWWenKaiMono-Bold.ttf"
+      as="font"
+      type="font/tff"
+      crossorigin
+    />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Primary Meta Tags -->
+    <title>{CONSTANTS.site_title}</title>
+    <meta name="title" content={CONSTANTS.site_title} />
+
+    <ViewTransitions />
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>

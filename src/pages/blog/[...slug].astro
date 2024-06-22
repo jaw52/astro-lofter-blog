@@ -1,0 +1,56 @@
+---
+import Affix from '@/components/Affix.vue'
+import Card from '@/components/Card.astro'
+import Header from '@/components/Header.astro'
+import Outline from '@/components/Outline.astro'
+import Layout from '@/layouts/Layout.astro'
+import { getCollection, type CollectionEntry } from 'astro:content'
+import '@/styles/prose.css'
+import '@/styles/markdown.css'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog')
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }))
+}
+
+type Props = CollectionEntry<'blog'>
+
+const post = Astro.props
+post.data.title = post.data.title || post.slug.split('/').pop()
+const { pubDate, title } = Astro.props.data
+const { slug } = post
+const { Content, headings, remarkPluginFrontmatter } = await post.render()
+---
+
+<Layout>
+  <Header />
+
+  <article class="w-720px mx-auto">
+    <Card>
+      <h1 transition:name={slug} class="text-2xl mb-4 text-center">{title}</h1>
+
+      <div class="flex justify-between mb-4">
+        <div class="flex justify-between gap-4">
+          <div class="text-coolGray-600" title="字数">
+            <p class="i-tabler:file-text color-warmgray"></p>
+            <span>{remarkPluginFrontmatter.words}字</span>
+          </div>
+        </div>
+
+        <time class="text-coolGray-600">
+          {pubDate.toISOString().slice(0, 10)}
+        </time>
+      </div>
+
+      <div class="prose bg-transparent!">
+        <Content />
+      </div>
+    </Card>
+  </article>
+
+  <Affix client:idle />
+  <Outline headings={headings} />
+</Layout>

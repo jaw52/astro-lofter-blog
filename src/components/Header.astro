@@ -1,0 +1,32 @@
+---
+import { CONSTANTS } from '@/consts'
+import HeaderLink from './HeaderLink.astro'
+---
+
+<div class="text-center w-full">
+  <p class="font-bold lh-9 pt-2.5 color-primary">{CONSTANTS.author}</p>
+</div>
+
+<div class="sticky top-0 z-10 bg-#f9f9f9 mb-5">
+  <nav class="flex justify-center pt-6">
+    <span class="color-link mr-1">-</span>
+    {
+      CONSTANTS.nav.map((nav) => {
+        return [
+          <HeaderLink href={nav.url}>{nav.name}</HeaderLink>,
+          <span class="color-link mr-1">-</span>,
+        ]
+      })
+    }
+  </nav>
+
+  <div class="navbg"></div>
+</div>
+
+<style>
+  .navbg {
+    width: 100%;
+    height: 45px;
+    background: url('/navbg.png') 50% bottom no-repeat;
+  }
+</style>

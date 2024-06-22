@@ -1,0 +1,41 @@
+---
+import Card from '@/components/Card.astro'
+import Header from '@/components/Header.astro'
+import Layout from '@/layouts/Layout.astro'
+import getArticleText from '@/utils/getArticleText'
+import { getCollection } from 'astro:content'
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
+)
+---
+
+<Layout>
+  <Header />
+  <div class="main w-720px flex flex-col gap-8 mx-auto text-xs">
+    {
+      posts.map((post) => {
+        const title = post.data.title || post.slug.split('/').pop()
+        const date = post.data.pubDate.toISOString().slice(0, 10)
+        const ndescribe = getArticleText(post)
+
+        return (
+          <a href={`/blog/${post.slug}/`}>
+            <Card>
+              <p class="color-link text-center mb-2">{date}</p>
+
+              <p
+                transition:name={post.slug}
+                class="color-primary font-bold lh-6"
+              >
+                {title}
+              </p>
+
+              <p class="line-clamp-3 color-primary lh-6">{ndescribe}</p>
+            </Card>
+          </a>
+        )
+      })
+    }
+  </div>
+</Layout>

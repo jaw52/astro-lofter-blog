@@ -1,0 +1,40 @@
+---
+import type { MarkdownHeading } from 'astro'
+
+interface Props {
+  headings: MarkdownHeading[]
+}
+
+const { headings } = Astro.props
+
+const minDepth = Math.min(...headings.map((item) => item.depth))
+const formatHeader: MarkdownHeading[] = headings.map((item) => {
+  return { ...item, depth: item.depth - minDepth }
+})
+---
+
+<div
+  class:list={[
+    'fixed top-36 left-12 flex flex-col gap-3 pl-2 b-l-1 b-l-warmgray-200',
+    { 'hidden!': headings.length === 0 },
+  ]}
+>
+  <div class="i-tabler:baseline-density-medium color-warmgray w-4 h-4"></div>
+
+  {
+    formatHeader.map((item) => {
+      const marginLeft = item.depth * 16
+      const fontSize = 14 - item.depth * 1
+
+      return (
+        <a
+          class="lh-3 color-warmGray hover:color-coolGray-700"
+          href={`#${item.slug}`}
+          style={`margin-left: ${marginLeft}px;font-size: ${fontSize}px`}
+        >
+          {item.text}
+        </a>
+      )
+    })
+  }
+</div>
